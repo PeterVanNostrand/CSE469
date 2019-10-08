@@ -1,0 +1,14 @@
+Frequent Itemsets for Market Data
+
+{Eggs}:  sup = 0.6
+{Key-chain}:  sup = 0.8
+{Mango}:  sup = 0.8
+{Onion}:  sup = 0.8
+{Yo-yo}:  sup = 0.6
+{Onion, Key-chain}:  sup = 0.6
+{Yo-yo, Key-chain}:  sup = 0.6
+{Onion, Mango}:  sup = 0.6
+{Onion, Eggs}:  sup = 0.6
+{Mango, Key-chain}:  sup = 0.6
+{Eggs, Key-chain}:  sup = 0.6
+{Onion, Eggs, Key-chain}:  sup = 0.6

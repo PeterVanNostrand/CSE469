@@ -1,0 +1,5 @@
+Corn,Ice-cream,Key-chain,Mango,Umbrella,Yo-yo
+Doll,Eggs,Key-chain,Mango,Onion,Umbrella
+Eggs,Ice-cream,Key-chain,Mango,Onion,Yo-yo
+Corn,Eggs,Key-chain,Onion,Yo-yo
+Apple,Doll,Mango,Nintendo,Onion

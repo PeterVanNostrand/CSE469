@@ -142,7 +142,7 @@ def apriori_gen(freq_sets, k):
     candidate_list : list
         The list of candidate itemsets.
     """
-    
+
     n = len(freq_sets)
     if n<2: # Minimum 2 frequent itemsets needed to generate candidates
         return []
@@ -155,15 +155,15 @@ def apriori_gen(freq_sets, k):
             if len(commonElems) >= k-2: # if k-2 of the items in the sets match
                 newCandidate = freq_sets[i].union(freq_sets[j]) # combine the sets to make a length k itemset
                 candidate_set.add(newCandidate) # add that itemset to the list of candidates
-                
+
     # find candidate itemsets which have k-1 length subsets that are infrequent
     invalidCandidates = set()
     for candidate in candidate_set:
-        for elem in candidate: 
+        for elem in candidate:
             k1subset = candidate.difference({elem}) # generate every possible k-1 subset
             subsetIsFrequent = False
             for freqItemset in freq_sets: # check that every k-1 subset is frequent
-                if k1subset == freqItemset: 
+                if k1subset == freqItemset:
                     subsetIsFrequent = True
                     break
             if not subsetIsFrequent: # if one or more of the k-1 subsets was infrequent
@@ -214,15 +214,10 @@ if __name__ == '__main__':
     print(support)
 
     '''
-    Example: 
-    
-    python apriori_templete.py market_data_transaction.txt 0.5 
-    
+    Example:
+
+    python apriori_templete.py market_data_transaction.txt 0.5
+
     python apriori_templete.py market_data_transaction.txt 0.5 True
-    
+
     '''
-
-
-
-
-

@@ -1,0 +1,22 @@
+Length 3 Candidate Itemsets for Gene Dataset
+
+{'gene_72', 'gene_3', 'gene_5'}
+{'gene_47', 'gene_3', 'gene_5'}
+{'gene_59', 'gene_5', 'gene_1'}
+{'gene_1', 'gene_91', 'gene_5'}
+{'gene_59', 'gene_5', 'gene_6'}
+{'gene_1', 'gene_3', 'gene_5'}
+{'gene_59', 'gene_5', 'gene_72'}
+{'gene_87', 'gene_59', 'gene_1'}
+{'gene_87', 'gene_1', 'gene_5'}
+{'gene_72', 'gene_3', 'gene_1'}
+{'gene_47', 'gene_3', 'gene_1'}
+{'gene_72', 'gene_1', 'gene_5'}
+{'gene_59', 'gene_1', 'gene_6'}
+{'gene_72', 'gene_59', 'gene_1'}
+{'gene_59', 'gene_3', 'gene_5'}
+{'gene_1', 'gene_47', 'gene_5'}
+{'gene_59', 'gene_3', 'gene_1'}
+{'gene_1', 'gene_5', 'gene_6'}
+{'gene_59', 'gene_3', 'gene_72'}
+{'gene_59', 'gene_87', 'gene_5'}

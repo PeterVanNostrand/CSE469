@@ -48,7 +48,7 @@ def merge_cluster(distance_matrix, cluster_candidate, T):
     '''
     merge_list = []
     minDist = np.min(distance_matrix, axis=None) # find the minimum distance in the array
-    minIndex = np.where(distance_matrix == minDist)[0] # find the fist occurance of that min value
+    minIndex = np.where(distance_matrix == minDist)[0] # find the fist occurrence of min value
 
     # Indices of minimum distance
     i = minIndex[0] # i-th row

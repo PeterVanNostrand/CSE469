@@ -1,0 +1,76 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "kmeans (iris)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/kmeans.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/datasets/iris/Iris.csv",                   // dataset file
+                "Assignment3/datasets/iris/Iris_Initial_Centroids.csv", // initial centroids file
+            "3",                                                        // number of clusters
+            "12"                                                        // number of iterations
+            ]
+        },
+        {
+            "name": "kmeans (yeast)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/kmeans.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/datasets/yeast/YeastGene.csv",                      // dataset file                
+                "Assignment3/datasets/yeast/YeastGene_Initial_Centroids.csv",    // initial centroids file
+                "6",                                                            // number of clusters
+                "7"                                                             // number of iterations
+            ]
+        },
+        {
+            "name": "PCA (iris)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/pca.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/output/iris/Iris_kmeans_cluster.csv"
+            ]
+        },
+        {
+            "name": "PCA (yeast)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/pca.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/output/yeast/YeastGene_kmeans_cluster.csv"
+            ]
+        },
+        {
+            "name": "heir (example)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/hierarchical.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/datasets/Example.csv", // data_filename
+                "1",                                // cluster_number
+            ]
+        },
+        {
+            "name": "heir (utilities)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/Assignment3/hierarchical.py",
+            "console": "integratedTerminal",
+            "args" : [
+                "Assignment3/datasets/Utilities.csv",   // data_filename
+                "1",                                    // cluster_number
+            ]
+        },
+    ]
+}

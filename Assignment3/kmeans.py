@@ -66,7 +66,6 @@ def getCentroid(dataSet, k, clusterAssment):
         centroids: cluster centroids
     '''
 
-    # centroids.reshape((k, dataSet.shape[1]))
     centroids = np.mat(np.zeros((k, dataSet.shape[1]))) # array of new cluster centroids
     dpInCluster = np.zeros((k, 1)) # Number of datapoints in a given cluser
 

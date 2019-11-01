@@ -37,7 +37,7 @@ def merge_cluster(distance_matrix, cluster_candidate, T):
     Returns:
     ------------
     cluster_candidate: dictionary
-        upadted cluster dictionary after merging two clusters
+        updated cluster dictionary after merging two clusters
         key is the cluster id, value is point ids in the cluster
     merge_list : list of tuples
         records the two old clusters' id and points that have just been merged.
@@ -45,8 +45,8 @@ def merge_cluster(distance_matrix, cluster_candidate, T):
          (cluster_two_id, point_ids_in_cluster_two)]
     '''
     merge_list = []
-
-    # TODO
+    minDist = np.min(distance_matrix, axis=None) # find the minimum distance in the array
+    minIndex = np.where(distance_matrix == minDist)[0] # find the fist occurance of that min value
 
     return cluster_candidate, merge_list
 

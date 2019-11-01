@@ -2,9 +2,9 @@
 # coding: utf-8
 
 import sys
-from numpy import *
 from matplotlib import pyplot as plt
 import numpy as np
+import math
 import copy
 import csv
 
@@ -16,7 +16,7 @@ def loadDataSet(fileName):      #general function to parse tab -delimited floats
         curLine = line.strip().split(',')
         fltLine = list(map(float,curLine)) #map all elements to float()
         dataMat.append(fltLine)
-    return mat(dataMat)
+    return np.mat(dataMat)
 
 
 def loadCenterSet(fileName):      #general function to parse tab -delimited floats
@@ -26,7 +26,7 @@ def loadCenterSet(fileName):      #general function to parse tab -delimited floa
         curLine = line.strip().split(',')
         fltLine = list(map(float,curLine)) #map all elements to float()
         centerMat.append(fltLine)
-    return mat(centerMat)
+    return np.mat(centerMat)
 
 
 def assignCluster(dataSet, k, centroids):
@@ -40,8 +40,16 @@ def assignCluster(dataSet, k, centroids):
         clusterAssment: list
             assigned cluster id for each data point
     '''
-    #TODO
 
+    clusterAssment = [0] * dataSet.shape[0]
+
+    for i in range(0, dataSet.shape[0]):
+        minDist = float("inf")
+        for j in range(0, centroids.shape[0]):
+            euclDist = math.sqrt(np.sum(np.square(dataSet[i] - centroids[j]))) # Euclidean sqrt((y1-x1)^2 + ... + ((yn-xn)^2)
+            if(euclDist < minDist):
+                minDist = euclDist
+                clusterAssment[i] = j
     return clusterAssment
 
 
@@ -56,9 +64,16 @@ def getCentroid(dataSet, k, clusterAssment):
     Output:
         centroids: cluster centroids
     '''
-    
-    #TODO
 
+    # centroids.reshape((k, dataSet.shape[1]))
+    centroids = np.mat(np.zeros((k, dataSet.shape[1]))) # array of new cluster centroids
+    dpInCluster = np.zeros((k, 1)) # Number of datapoints in a given cluser
+
+    # Compute the new centroids as average of all points within the corresponding cluster
+    for i in range(0, dataSet.shape[0]): # Take the sum of all points within the cluster
+        centroids[clusterAssment[i]] += dataSet[i]
+        dpInCluster[clusterAssment[i]] += 1
+    centroids /= dpInCluster # Divide by the number of points in the cluster to get average
     return centroids
 
 
@@ -100,20 +115,22 @@ def saveData(save_filename, data, clusterAssment):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 5:
         data_filename = sys.argv[1]
         centroid_filename = sys.argv[2]
         k = int(sys.argv[3])
+        it = int(sys.argv[4])
     else:
         data_filename = 'Iris.csv'
         centroid_filename = 'Iris_Initial_Centroids.csv'
         k = 3
+        it = 12
 
     save_filename = data_filename.replace('.csv', '_kmeans_cluster.csv')
 
     data = loadDataSet(data_filename)
     centroids = loadCenterSet(centroid_filename)
-    centroids, clusterAssment = kMeans(data, 12, k, centroids )
+    centroids, clusterAssment = kMeans(data, it, k, centroids )
     print(centroids)
     saveData(save_filename, data, clusterAssment)
 

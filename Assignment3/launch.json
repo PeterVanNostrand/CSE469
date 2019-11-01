@@ -58,7 +58,7 @@
             "console": "integratedTerminal",
             "args" : [
                 "Assignment3/datasets/Example.csv", // data_filename
-                "1",                                // cluster_number
+                "1"                                 // cluster_number
             ]
         },
         {
@@ -69,8 +69,8 @@
             "console": "integratedTerminal",
             "args" : [
                 "Assignment3/datasets/Utilities.csv",   // data_filename
-                "1",                                    // cluster_number
+                "1"                                     // cluster_number
             ]
-        },
+        }
     ]
 }

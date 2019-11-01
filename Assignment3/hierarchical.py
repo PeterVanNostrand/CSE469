@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import sys
+import os
 from matplotlib import pyplot as plt
 import numpy as np
 import copy
@@ -203,6 +204,7 @@ def saveData(save_filename, data, clusterAssment):
     data_cluster = np.concatenate((data, clusterAssment), 1)
     data_cluster = data_cluster.tolist()
 
+    os.makedirs(os.path.dirname(save_filename), exist_ok=True)
     with open(save_filename, 'w', newline = '') as f:
         writer = csv.writer(f)
         writer.writerows(data_cluster)

@@ -219,6 +219,7 @@ if __name__ == '__main__':
         cluster_number = 1
 
     save_filename = data_filename.replace('.csv', '_hc_cluster.csv')
+    save_filename = save_filename.replace('datasets', 'output')
 
     data = loadDataSet(data_filename)
 

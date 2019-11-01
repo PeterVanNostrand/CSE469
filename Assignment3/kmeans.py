@@ -127,6 +127,7 @@ if __name__ == '__main__':
         it = 12
 
     save_filename = data_filename.replace('.csv', '_kmeans_cluster.csv')
+    save_filename = save_filename.replace('datasets', 'output')
 
     data = loadDataSet(data_filename)
     centroids = loadCenterSet(centroid_filename)

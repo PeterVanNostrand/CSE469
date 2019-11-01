@@ -7,6 +7,7 @@ import numpy as np
 import copy
 import csv
 
+rowToClust = []
 
 def loadDataSet(fileName):      #general function to parse tab -delimited floats
     dataMat = []                #assume last column is target value
@@ -48,10 +49,31 @@ def merge_cluster(distance_matrix, cluster_candidate, T):
     minDist = np.min(distance_matrix, axis=None) # find the minimum distance in the array
     minIndex = np.where(distance_matrix == minDist)[0] # find the fist occurance of that min value
 
+    # Indices of minimum distance
+    i = minIndex[0] # i-th row
+    j = minIndex[1] # j-th column
+
+    # The cluster IDs corresponding to the i,j row/cols
+    clustID1 = rowToClust[i]
+    clustID2 = rowToClust[j]
+
+    # Get the points from each cluster
+    points1 = cluster_candidate[clustID1]
+    points2 = cluster_candidate[clustID2]
+    newPoints = points1 + points2
+
+    # Remove the old clusters and add a new merged cluser
+    del cluster_candidate[clustID1]
+    del cluster_candidate[clustID2]
+    cluster_candidate[T] = newPoints
+
+    # Record which clusters were merged
+    merge_list = [(clustID1, points1), (clustID2, points2)]
+
     return cluster_candidate, merge_list
 
 
-def update_distance(distance_matrix, cluster_candidate, merge_list):
+def update_distance(distance_matrix, cluster_candidate, merge_list, T):
     ''' Update the distantce matrix
     
     Parameters:
@@ -70,10 +92,53 @@ def update_distance(distance_matrix, cluster_candidate, merge_list):
     distance_matrix: 2-D array
         updated distance matrix       
     '''
+
+    # Get which clusters were merged
+    clustID1 = merge_list[0][0]
+    clustID2 = merge_list[1][0]
+
+    # Get the corresponding row/col values
+    global rowToClust
+    i = min(rowToClust.index(clustID1), rowToClust.index(clustID2))
+    j = max(rowToClust.index(clustID1), rowToClust.index(clustID2))
+
+    # Calculate the new distance between each cluster and the merged cluster
+    newDists = {}
+    for row in range(0, distance_matrix.shape[0]):
+        if (row==i or row==j):
+            continue
+        newDists[rowToClust[row]] = min(distance_matrix[row][i], distance_matrix[row][j])
+
+    # Remove j-th row and update rowToClust mapping
+    newDistMat = np.delete(distance_matrix, j, axis=0)
+    for idx in range(j, len(rowToClust)-1):
+        rowToClust[idx] = rowToClust[idx+1] 
+
+    # Remove i-th row and update rowToClust mapping
+    newDistMat = np.delete(newDistMat, i, axis=0)
+    for idx in range(i, len(rowToClust)-1):
+        rowToClust[idx] = rowToClust[idx+1]
     
-    # TODO
+    # Remove i-th and j-th cols, mapping already updated
+    newDistMat = np.delete(newDistMat, j, axis=1)
+    newDistMat = np.delete(newDistMat, i, axis=1)
+
+    # Add a new row to the bottom and update rowToClust mapping
+    newRow = [0] * newDistMat.shape[1]
+    newDistMat = np.vstack((newDistMat, newRow))
+    lastRow = newDistMat.shape[0] - 1
+
+    # Fill the row with the new distances
+    rowToClust[lastRow] = T
+    for col in range(0, newDistMat.shape[1]):
+        newDistMat[lastRow][col] = newDists[rowToClust[col]]
+
+    # Add new column to right, as matrix is symmetric just use the transpose of new row
+    newCol = np.append(newDistMat[lastRow], 100000) # Adding the self-self dist in bottom right corner
+    newDistMat = np.vstack((newDistMat.T, newCol)).T
     
-    return distance_matrix  
+    distance_matrix = newDistMat
+    return distance_matrix
 
     
 
@@ -109,12 +174,16 @@ def agglomerative_with_min(data, cluster_number):
                 distance_matrix[i,j] = 100000
             else:
                 distance_matrix[i,j] = np.sqrt(np.sum((data[i]-data[j])**2))
+
+    global rowToClust
+    for i in range(1, N+1):
+        rowToClust.append(i)
     
     # hiearchical clustering loop
     T = N + 1 #cluster index
     for i in range(N-cluster_number):
         cluster_candidate, merge_list = merge_cluster(distance_matrix, cluster_candidate, T)
-        distance_matrix   = update_distance(distance_matrix, cluster_candidate, merge_list )
+        distance_matrix   = update_distance(distance_matrix, cluster_candidate, merge_list, T)
         print('%d-th merging: %d, %d, %d'% (i, merge_list[0][0], merge_list[1][0], T))
         T += 1
         # print(cluster_candidate)

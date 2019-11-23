@@ -1,5 +1,6 @@
 
 import treeplot
+import sys
 
 def loadDataSet(filepath):
     '''
@@ -50,6 +51,30 @@ def splitData(dataSet, axis, value):
     return subset
 
 
+def getVals(dataSet, feature_id):
+    dict_vals = {}
+    for sample in dataSet:
+        value = sample[feature_id]
+        dict_vals[value] = 0
+    return dict_vals.keys()
+
+
+def calcGini(dataSet):
+    label_freq = {}
+    for sample in dataSet:
+        label = sample[-1]
+        if not (label in label_freq):
+            label_freq[label] = 0
+        label_freq[label] += 1
+    
+    total_freq = len(dataSet)
+    gini = 1
+    for freq in label_freq.values():
+        gini -= (freq/total_freq)**2
+
+    return gini
+
+
 def chooseBestFeature(dataSet):
     '''
     choose best feature to split based on Gini index
@@ -65,15 +90,25 @@ def chooseBestFeature(dataSet):
     bestFeatId: int
         index of the best feature
     '''
-    #TODO
+    n_samples = len(dataSet) # total number of samples
+    m_features = len(dataSet[0]) - 1 # number of features (ignore last col which is the label)
+    gain = [1] * m_features
+    for i in range(0, m_features):
+        gain[i] = calcGini(dataSet)
+        for value in getVals(dataSet, i):
+            subset = splitData(dataSet, i, value) 
+            n_subset = len(subset)
+            gini_subset = calcGini(subset)
+            gain[i] -= (n_subset / n_samples) * gini_subset
 
-    return bestFeatId  
+    bestFeatId = gain.index(max(gain))
+    return bestFeatId
 
 
 def stopCriteria(dataSet):
     '''
     Criteria to stop splitting: 
-    1) if all the classe labels are the same, then return the class label;
+    1) if all the class labels are the same, then return the class label;
     2) if there are no more features to split, then return the majority label of the subset.
 
     Parameters
@@ -88,11 +123,30 @@ def stopCriteria(dataSet):
         if satisfying stop criteria, assignedLabel is the assigned class label;
         else, assignedLabel is None 
     '''
+    # Count the frequency of all labels
+    label_freq = {}
+    for sample in dataSet:
+        # Get the label of the sample
+        label = sample[-1]
+        # If its a novel label, start with frequency 0
+        if not (label in label_freq):
+            label_freq[label] = 0
+        # Increment the frequency
+        label_freq[label] += 1
+
+    # Find the most frequent label
+    max_freq = 0
     assignedLabel = None
-    # TODO
+    for label, freq in label_freq.items():
+        if freq > max_freq:
+            max_freq = freq
+            assignedLabel = label
+
+    # If there is theres more than one label and features to be split
+    if max_freq!=len(dataSet) and len(dataSet[0])>1:
+        assignedLabel = None
 
     return assignedLabel
-
 
 
 def buildTree(dataSet, featNames):
@@ -129,7 +183,11 @@ def buildTree(dataSet, featNames):
 
 
 if __name__ == "__main__":
-    data, featNames = loadDataSet('golf.csv')
+    if len(sys.argv) == 2:
+        filepath = sys.argv[1]
+    else:
+        filepath = "golf.csv"
+    data, featNames = loadDataSet(filepath)
     dtTree = buildTree(data, featNames)
     # print (dtTree) 
     treeplot.createPlot(dtTree)
